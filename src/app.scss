@@ -1,5 +1,16 @@
 @use "page.scss";
 
+html, body {
+  height: 100%;
+  padding: 10px;
+  padding-top: 0;
+  overflow: auto !important;
+}
+
 p {
     font-weight: bold;
+}
+
+.expand {
+  flex-grow: 1;
 }

@@ -2,11 +2,11 @@
 <component type="addon">
   <id>org.cockpit_project.cockpit</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <name>HAproxy</name>
-  <summary>HAproxy for cockpit module</summary>
+  <name>HAProxy</name>
+  <summary>HAProxy for cockpit module</summary>
   <description>
     <p>
-      HAproxy for cockpit module
+      HAProxy for cockpit module
     </p>
   </description>
   <extends>org.cockpit_project.cockpit</extends>

@@ -1,6 +1,6 @@
-# Cockpit HAproxy
+# Cockpit HAProxy
 
-Plugin to manage HAproxy Maps through cockpit
+Plugin to manage HAProxy Maps through cockpit
 
 # Development dependencies
 
