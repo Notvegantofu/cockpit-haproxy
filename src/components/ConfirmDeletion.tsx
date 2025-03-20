@@ -1,22 +1,23 @@
 import React from 'react';
 import { Modal, ModalVariant, Button } from '@patternfly/react-core';
+import { ProxyData } from './DomainTable';
 
 interface DeleteProps {
-  removeProxyData: (index: number) => void;
   domain: string;
   index: number;
+  proxyDataState: [ProxyData[], React.Dispatch<React.SetStateAction<ProxyData[]>>]
 }
 
-export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ removeProxyData, domain, index }) => {
+export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ domain, index, proxyDataState: [ proxyData, setProxyData ] }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
+  const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const confirmDeletion = (_event: KeyboardEvent | React.MouseEvent) => {
-    removeProxyData(index);
-    handleModalToggle(_event);
+  const confirmDeletion = (_: any) => {
+    setProxyData(proxyData.filter(date => date.index !== index));
+    handleModalToggle();
   }
 
   return (

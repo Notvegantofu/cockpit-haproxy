@@ -6,19 +6,22 @@ import { LoadingData } from "./LoadingData";
 import { MissingData } from "./MissingData";
 import { DisableSwitch } from "./DisableSwitch";
 import { ConfirmApplication } from "./ConfirmApplication";
+import { BackendSelect } from "./BackendSelect";
+import { DomainInput } from "./DomainInput";
 
 
 import cockpit from "cockpit";
 
-interface ProxyData {
+
+const config = '/home/tobias/cockpit-haproxy/src/haproxy.cfg';
+export const domainmap = '/home/tobias/cockpit-haproxy/src/domain.map';
+
+export interface ProxyData {
   domain: string;
   backend: string;
   active: boolean;
   index: number;
 }
-
-const config = '/home/tobias/cockpit-haproxy/src/haproxy.cfg';
-const domainmap = '/home/tobias/cockpit-haproxy/src/domain.map';
 
 export const DomainTable = () => {
   const [ backends, setBackends ] = useState<string[]>([]);
@@ -31,8 +34,9 @@ export const DomainTable = () => {
 
   useEffect(() => {
     cockpit.file(config).read().then(content => updateBackends(content || ""))
-    cockpit.file(domainmap).watch(content => updateProxyData(content || ""));
-    setReady(true);
+    const handle = cockpit.file(domainmap).watch(content => updateProxyData(content || ""));
+
+    return () => handle.remove();
   }, [])
 
   async function updateBackends(content: string) {
@@ -58,18 +62,7 @@ export const DomainTable = () => {
       newProxyData.push({domain, backend, active, index});
     }
     setProxyData(newProxyData)
-  }
-
-  function removeProxyData(index: number) {
-    setProxyData(proxyData.filter(date => date.index !== index));
-  }
-
-  function disableDomain(index: number) {
-    proxyData.forEach(date => {if (date.index === index) date.active = !date.active});
-  }
-
-  function applyChanges() {
-    console.log("Applied changes");
+    setReady(true)
   }
 
   function onSearchChange(value: string) {
@@ -129,12 +122,12 @@ export const DomainTable = () => {
     return (
       <>
         {!ready? <LoadingData/> :
-        filteredProxyData.length === 0 ? <MissingData/> : filteredProxyData.map((proxyData) => (
-          <Tr key={proxyData.domain}>
-              <Td dataLabel={columnNames.active}><DisableSwitch disableDomain={disableDomain} index={proxyData.index} active={proxyData.active}/></Td>
-              <Td dataLabel={columnNames.domain}>{proxyData.domain}</Td>
-              <Td dataLabel={columnNames.backend}>{proxyData.backend}</Td>
-              <Td dataLabel={columnNames.remove}>{<ConfirmDeletion removeProxyData={removeProxyData} index={proxyData.index} domain={proxyData.domain}/>}</Td>
+        filteredProxyData.length === 0 ? <MissingData/> : filteredProxyData.map((date) => (
+          <Tr key={date.domain}>
+              <Td dataLabel={columnNames.active}><DisableSwitch index={date.index} active={date.active} proxyData={proxyData}/></Td>
+              <Td dataLabel={columnNames.domain}><DomainInput index={date.index} initial={date.domain} proxyData={proxyData}/></Td>
+              <Td dataLabel={columnNames.backend}><BackendSelect options={backends} initial={date.backend} index={date.index} proxyData={proxyData}/></Td>
+              <Td dataLabel={columnNames.remove}>{<ConfirmDeletion index={date.index} domain={date.domain} proxyDataState={[proxyData, setProxyData]}/>}</Td>
           </Tr>
         ))}
       </>)
@@ -153,7 +146,7 @@ export const DomainTable = () => {
             />
           </ToolbarItem>
           <ToolbarItem>
-            <ConfirmApplication applyChanges={applyChanges}/>
+            <ConfirmApplication proxyData={proxyData}/>
           </ToolbarItem>
         </ToolbarContent>
       </Toolbar>

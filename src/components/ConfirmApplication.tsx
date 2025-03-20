@@ -1,20 +1,26 @@
 import React from 'react';
 import { Modal, ModalVariant, Button } from '@patternfly/react-core';
+import { ProxyData, domainmap } from './DomainTable';
+import cockpit from 'cockpit';
 
 interface DeleteProps {
-  applyChanges: () => void;
+  proxyData: ProxyData[]
 }
 
-export const ConfirmApplication: React.FunctionComponent<DeleteProps> = ({ applyChanges }) => {
+export const ConfirmApplication: React.FunctionComponent<DeleteProps> = ({ proxyData }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const handleModalToggle = (_event: KeyboardEvent | React.MouseEvent) => {
+  const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const confirmApplication = (_event: KeyboardEvent | React.MouseEvent) => {
-    applyChanges();
-    handleModalToggle(_event);
+  const confirmApplication = (_: any) => {
+    let output = "";
+    for (const date of proxyData) {
+      output += `${((date.active ? "" : "# ") + date.domain).padEnd(30, " ")} ${date.backend}\n`;
+    }
+    cockpit.file(domainmap).replace(output);
+    handleModalToggle();
   }
 
   return (
