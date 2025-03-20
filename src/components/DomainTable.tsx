@@ -3,7 +3,6 @@ import { Table, Thead, Tr, Th, Tbody, Td, ThProps } from '@patternfly/react-tabl
 import { SearchInput, Toolbar, ToolbarItem, ToolbarContent } from '@patternfly/react-core'
 import { LoadingData } from "./LoadingData";
 import { MissingData } from "./MissingData";
-import { ConfirmApplication } from "./ConfirmApplication";
 import { DateRow } from "./DateRow";
 
 import cockpit from "cockpit";
@@ -11,6 +10,7 @@ import cockpit from "cockpit";
 
 const config = '/home/tobias/cockpit-haproxy/src/haproxy.cfg';
 export const domainmap = '/home/tobias/cockpit-haproxy/src/domain.map';
+export const devMode = true;
 
 export const columnNames = {
   active: 'Active?',
@@ -32,7 +32,8 @@ export const DomainTable = () => {
   const [ proxyData, setProxyData ] = useState<ProxyData[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [ready, setReady] = useState(false);
-  const filteredProxyData = proxyData.filter(onFilter);
+  const rows = proxyData.map((date) => <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index}/>)
+  const filteredRows = rows.filter(onFilter);
 
   useEffect(() => {
     cockpit.file(config).read().then(content => updateBackends(content || ""))
@@ -69,7 +70,7 @@ export const DomainTable = () => {
     setSearchValue(value);
   };
 
-  function onFilter(row: ProxyData) {
+  function onFilter(row: React.JSX.Element) {
     if (searchValue === '') {
       return true;
     }
@@ -80,19 +81,8 @@ export const DomainTable = () => {
     } catch (err) {
       input = new RegExp(searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
     }
-    return row.domain.search(input) >= 0 || row.backend.search(input) >= 0;
+    return row.props.date.domain.search(input) >= 0 || row.props.date.backend.search(input) >= 0;
   };
-
-  const Rows: React.FunctionComponent = () => {
-    return (
-      <>
-        {!ready? <LoadingData/> :
-        filteredProxyData.length === 0 ? <MissingData/> :
-          filteredProxyData.map((date) => (
-            <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index}/>
-        ))}
-      </>)
-  }
 
   return (
     <>
@@ -122,7 +112,7 @@ export const DomainTable = () => {
         </Tr>
       </Thead>
         <Tbody>
-          <Rows/>
+          {!ready? <LoadingData/> : filteredRows.length === 0 ? <MissingData/> : filteredRows}
         </Tbody>
       </Table>
     </>

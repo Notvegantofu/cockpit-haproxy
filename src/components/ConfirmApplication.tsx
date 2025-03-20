@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { act } from 'react';
 import { Modal, ModalVariant, Button } from '@patternfly/react-core';
-import { ProxyData, domainmap } from './DomainTable';
+import { ProxyData, domainmap, devMode } from './DomainTable';
 import cockpit from 'cockpit';
 
 interface ApplyProps {
@@ -9,9 +9,10 @@ interface ApplyProps {
   domain: string,
   active: boolean,
   backend: string
+  updater: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-export const ConfirmApplication: React.FunctionComponent<ApplyProps> = ({ proxyData, index, domain, active, backend }) => {
+export const ConfirmApplication: React.FunctionComponent<ApplyProps> = ({ proxyData, index, domain, active, backend, updater }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const handleModalToggle = () => {
@@ -30,14 +31,27 @@ export const ConfirmApplication: React.FunctionComponent<ApplyProps> = ({ proxyD
       output += `${date.active ? "" : "# "}${date.domain} ${date.backend}\n`;
     }
     await cockpit.file(domainmap).replace(output);
-    handleModalToggle();
     if (active && prevActive) {
-      await cockpit.spawn(["sh", "-c", `echo "set map ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`], {superuser: 'require'});
+      if (devMode) {
+        console.log(["sh", "-c", `echo "set map ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`].reduce((prev, curr) => `${prev} ${curr}`));
+      } else {
+        await cockpit.spawn(["sh", "-c", `echo "set map ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`], {superuser: 'require'});
+      }
     } else if (active) {
-      await cockpit.spawn(["sh", "-c", `echo "set add ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`], {superuser: 'require'});
+      if (devMode) {
+        console.log(["sh", "-c", `echo "set add ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`].reduce((prev, curr) => `${prev} ${curr}`));
+      } else {
+        await cockpit.spawn(["sh", "-c", `echo "set add ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`], {superuser: 'require'});
+      }
     } else {
-      await cockpit.spawn(["sh", "-c", `echo "set del ${domainmap} ${domain}" | sudo socat stdio /run/haproy/admin.sock`], {superuser: 'require'});
+      if (devMode) {
+        console.log(["sh", "-c", `echo "set del ${domainmap} ${domain}" | sudo socat stdio /run/haproy/admin.sock`].reduce((prev, curr) => `${prev} ${curr}`));
+      } else {
+        await cockpit.spawn(["sh", "-c", `echo "set del ${domainmap} ${domain}" | sudo socat stdio /run/haproy/admin.sock`], {superuser: 'require'});
+      }
     }
+    handleModalToggle();
+    updater(["update"]);
   }
 
   return (

@@ -1,22 +1,14 @@
 # example.com backend_main_site
 test.com backend_testing
-# shop.example.com backend_ecommerce
-files.example.com backend_ecommerce
-support.example.com backend_main_site
-forum.example.com backend_main_site
+shop.example.com backend_ecommerce
+# files.example.com backend_ecommerce
+# support.example.com backend_main_site
 # profile.example.com backend_api
-reports.example.com backend_main_site
+# reports.example.com backend_main_site
 partners.example.com backend_testing
-dev.example.com backend_api
-# test1.example.com backend_blog
-test2.example.com backend_main_site
-# analytics.example.comchanged backend_ecommerce
-tracking.example.com backend_ecommerce
-auth.example.com backend_main_site
+# auth.example.com backend_main_site
 login.example.com backend_testing
-register.example.com backend_api
 upload.example.com backend_ecommerce
-download.example.com backend_blog
 games.example.com backend_main_site
 music.example.com backend_testing
 video.example.com backend_api
