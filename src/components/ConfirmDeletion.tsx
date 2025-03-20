@@ -1,23 +1,35 @@
 import React from 'react';
 import { Modal, ModalVariant, Button } from '@patternfly/react-core';
-import { ProxyData } from './DomainTable';
+import { ProxyData, domainmap } from './DomainTable';
+import cockpit from 'cockpit';
 
 interface DeleteProps {
   domain: string;
   index: number;
+  active: boolean;
   proxyDataState: [ProxyData[], React.Dispatch<React.SetStateAction<ProxyData[]>>]
 }
 
-export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ domain, index, proxyDataState: [ proxyData, setProxyData ] }) => {
+export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ domain, index, active, proxyDataState: [ proxyData, setProxyData ] }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const confirmDeletion = (_: any) => {
-    setProxyData(proxyData.filter(date => date.index !== index));
+  const confirmDeletion = async (_: any) => {
+    setProxyData(prevData => prevData.filter(date => date.index !== index));
+    let output = "";
+    for (const date of proxyData) {
+      if (date.index !== index) {
+        output += `${date.active ? "" : "# "}${date.domain} ${date.backend}\n`;
+      }
+    }
+    await cockpit.file(domainmap).replace(output);
     handleModalToggle();
+    if (active) {
+      await cockpit.spawn(["sh", "-c", `echo "set del ${domainmap} ${domain}" | sudo socat stdio /run/haproy/admin.sock`], {superuser: 'require'});
+    }
   }
 
   return (
@@ -39,7 +51,7 @@ export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ domain, 
           </Button>
         ]}
       >
-        Are you sure you want to delete the entry for "{domain}"? If you don't apply your changes, this will be reversed.
+        Are you sure you want to delete the entry for "{domain}"? This action cannot be reversed!
       </Modal>
     </React.Fragment>
   );
