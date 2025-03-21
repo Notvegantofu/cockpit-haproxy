@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Table, Thead, Tr, Th, Tbody, Td, ThProps } from '@patternfly/react-table';
+import { Table, Thead, Tr, Th, Tbody, Td, ThProps, OuterScrollContainer, InnerScrollContainer } from '@patternfly/react-table';
 import { SearchInput, Toolbar, ToolbarItem, ToolbarContent } from '@patternfly/react-core'
 import { LoadingData } from "./LoadingData";
 import { MissingData } from "./MissingData";
 import { DateRow } from "./DateRow";
+import { AddDomain } from './AddDomain'
 
 import cockpit from "cockpit";
 
 
 const config = '/home/tobias/cockpit-haproxy/src/haproxy.cfg';
 export const domainmap = '/home/tobias/cockpit-haproxy/src/domain.map';
-export const devMode = true;
+export const devMode = false;
 
 export const columnNames = {
   active: 'Active?',
@@ -102,16 +103,17 @@ export const DomainTable = () => {
       aria-label="HAProxy table"
       variant='compact'
       >
-      <Thead>
-        <Tr>
-          <Th width={10}>{columnNames.active}</Th>
-          <Th width={35}>{columnNames.domain}</Th>
-          <Th width={35}>{columnNames.backend}</Th>
-          <Th width={10} screenReaderText='Delete Column' />
-          <Th width={10} screenReaderText="Apply Column" />
-        </Tr>
-      </Thead>
+        <Thead>
+          <Tr>
+            <Th width={10} textCenter>{columnNames.active}</Th>
+            <Th width={35}>{columnNames.domain}</Th>
+            <Th width={35}>{columnNames.backend}</Th>
+            <Th width={10} screenReaderText='Delete Column' textCenter/>
+            <Th width={10} screenReaderText="Apply Column" textCenter/>
+          </Tr>
+        </Thead>
         <Tbody>
+          <AddDomain proxyDataState={[proxyData, setProxyData]} backends={backends}/>
           {!ready? <LoadingData/> : filteredRows.length === 0 ? <MissingData/> : filteredRows}
         </Tbody>
       </Table>

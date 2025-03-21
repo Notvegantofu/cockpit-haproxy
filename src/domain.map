@@ -40,3 +40,9 @@ finance.example.com backend_api
 legal.example.com backend_ecommerce
 security.example.com backend_blog
 addeddomain.com backend_api
+# inactivedomain.com backend_testing
+testdomain.it undefined
+working.it backend_main_site
+# disappearing.at backend_api
+# whynotworking.de backend_api
+notstale.de backend_ecommerce

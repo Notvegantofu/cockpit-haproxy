@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React from 'react';
 import { Modal, ModalVariant, Button } from '@patternfly/react-core';
 import { ProxyData, domainmap, devMode } from './DomainTable';
 import cockpit from 'cockpit';

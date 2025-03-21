@@ -27,11 +27,11 @@ export const DateRow: React.FunctionComponent<RowProps> = memo(({ date, proxyDat
 
   return (
     <Tr>
-      <Td dataLabel={columnNames.active}><DisableSwitch activeState={tempActiveState}/></Td>
+      <Td dataLabel={columnNames.active} textCenter><DisableSwitch activeState={tempActiveState}/></Td>
       <Td dataLabel={columnNames.domain}>{date.domain}</Td>
       <Td dataLabel={columnNames.backend}><BackendSelect options={backends} backendState={tempBackendState}/></Td>
-      <Td dataLabel={columnNames.remove}>{<ConfirmDeletion index={date.index} domain={date.domain} proxyDataState={proxyDataState} active={date.active}/>}</Td>
-      <Td dataLabel={columnNames.apply}>{changed && <ConfirmApplication index={date.index} domain={date.domain} backend={tempBackendState[0]} active={tempActiveState[0]} proxyData={proxyDataState[0]} updater={updater}/>}</Td>
+      <Td dataLabel={columnNames.remove} textCenter>{<ConfirmDeletion index={date.index} domain={date.domain} proxyDataState={proxyDataState} active={date.active}/>}</Td>
+      <Td dataLabel={columnNames.apply} textCenter>{changed && <ConfirmApplication index={date.index} domain={date.domain} backend={tempBackendState[0]} active={tempActiveState[0]} proxyData={proxyDataState[0]} updater={updater}/>}</Td>
     </Tr>
   )
 })
