@@ -30,7 +30,7 @@ export const ConfirmApplication: React.FunctionComponent<ApplyProps> = ({ proxyD
       }
       output += `${date.active ? "" : "# "}${date.domain} ${date.backend}\n`;
     }
-    await cockpit.file(domainmap).replace(output);
+    await cockpit.file(domainmap, {superuser: 'require'}).replace(output);
     if (active && prevActive) {
       if (devMode) {
         console.log(["sh", "-c", `echo "set map ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`].reduce((prev, curr) => `${prev} ${curr}`));

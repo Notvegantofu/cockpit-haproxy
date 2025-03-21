@@ -37,8 +37,8 @@ export const DomainTable = () => {
   const filteredRows = rows.filter(onFilter);
 
   useEffect(() => {
-    cockpit.file(config).read().then(content => updateBackends(content || ""))
-    cockpit.file(domainmap).read().then(content => updateProxyData(content || ""));
+    cockpit.file(config, {superuser: 'require'}).read().then(content => updateBackends(content || ""))
+    cockpit.file(domainmap, {superuser: 'require'}).read().then(content => updateProxyData(content || ""));
   }, [])
 
   async function updateBackends(content: string) {

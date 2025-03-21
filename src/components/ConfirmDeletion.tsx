@@ -25,7 +25,7 @@ export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ domain, 
         output += `${date.active ? "" : "# "}${date.domain} ${date.backend}\n`;
       }
     }
-    await cockpit.file(domainmap).replace(output);
+    await cockpit.file(domainmap, {superuser: 'require'}).replace(output);
     handleModalToggle();
     if (active) {
       if (devMode) {
