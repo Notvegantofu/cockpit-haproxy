@@ -1,4 +1,4 @@
-import { TextInput, Button, Toolbar, ToolbarContent, ToolbarItem } from '@patternfly/react-core';
+import { TextInput } from '@patternfly/react-core';
 import React, { useEffect, useState } from 'react';
 import { ProxyData } from './DomainTable';
 import { DisableSwitch } from './DisableSwitch';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Thead, Tr, Th, Tbody, Td, ThProps, OuterScrollContainer, InnerScrollContainer } from '@patternfly/react-table';
+import { Table, Thead, Tr, Th, Tbody } from '@patternfly/react-table';
 import { SearchInput, Toolbar, ToolbarItem, ToolbarContent } from '@patternfly/react-core'
 import { LoadingData } from "./LoadingData";
 import { MissingData } from "./MissingData";
@@ -9,9 +9,10 @@ import { AddDomain } from './AddDomain'
 import cockpit from "cockpit";
 
 
-const config = '/home/tobias/cockpit-haproxy/src/haproxy.cfg';
-export const domainmap = '/home/tobias/cockpit-haproxy/src/domain.map';
-export const devMode = false;
+const config = '/etc/haproxy/haproxy.cfg';
+export const mapLocation = '/etc/haproxy/maps'
+export const domainmap = `${mapLocation}/hosts.map`;
+export const devMode = true;
 
 export const columnNames = {
   active: 'Active?',

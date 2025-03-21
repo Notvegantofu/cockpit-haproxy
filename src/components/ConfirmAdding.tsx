@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, ModalVariant, Button } from '@patternfly/react-core';
 import { ProxyData, domainmap, devMode } from './DomainTable';
 import cockpit from 'cockpit';
+import { createBackup } from './createBackup';
 
 interface AddProps {
   proxyDataState: [ProxyData[], React.Dispatch<React.SetStateAction<ProxyData[]>>],
@@ -21,7 +22,8 @@ export const ConfirmAdding: React.FunctionComponent<AddProps> = ({ proxyDataStat
   const confirmAdding = async (_: any) => {
     const index = proxyData[proxyData.length-1].index + 1;
     setProxyData(proxyData => proxyData.concat({index, active, domain, backend}));
-    await cockpit.file(domainmap, {superuser: 'require'}).modify(content => `${content}${active ? "" : "# "}${domain} ${backend}\n`);
+    await createBackup()
+      .then(() => cockpit.file(domainmap, {superuser: 'require'}).modify(content => `${content}${active ? "" : "# "}${domain} ${backend}\n`));
     if (active) {
       if (devMode) {
         console.log(["sh", "-c", `echo "set add ${domainmap} ${domain} ${backend}" | sudo socat stdio /run/haproy/admin.sock`].reduce((prev, curr) => `${prev} ${curr}`));

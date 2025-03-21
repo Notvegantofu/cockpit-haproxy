@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, ModalVariant, Button } from '@patternfly/react-core';
 import { ProxyData, domainmap, devMode } from './DomainTable';
 import cockpit from 'cockpit';
+import { createBackup } from './createBackup';
 
 interface DeleteProps {
   domain: string;
@@ -25,7 +26,8 @@ export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ domain, 
         output += `${date.active ? "" : "# "}${date.domain} ${date.backend}\n`;
       }
     }
-    await cockpit.file(domainmap, {superuser: 'require'}).replace(output);
+    await createBackup()
+          .then(() => cockpit.file(domainmap, {superuser: 'require'}).replace(output));
     handleModalToggle();
     if (active) {
       if (devMode) {
