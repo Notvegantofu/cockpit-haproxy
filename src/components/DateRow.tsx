@@ -48,15 +48,12 @@ export const DateRow: React.FunctionComponent<RowProps> = memo(({ date, proxyDat
             .then(() => cockpit.file(domainmap, {superuser: 'require'}).replace(output));
           return newArray;
         })
-        setReordering(prev => !prev);
-        setSelectedIndex(-1)
-      }else {
-        setSelectedIndex(-1);
       }
+      setSelectedIndex(prev => -1);
     } else {
-      setSelectedIndex(date.index);
-      setReordering(prev => !prev);
+      setSelectedIndex(prev => date.index);
     }
+    setReordering(prev => !prev);
   }
 
   return (
