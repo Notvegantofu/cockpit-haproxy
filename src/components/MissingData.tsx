@@ -6,7 +6,7 @@ import SearchIcon from '@patternfly/react-icons/dist/esm/icons/search-icon';
 export const MissingData: React.FunctionComponent = () => {
     return (
       <Tr>
-        <Td colSpan={3}>
+        <Td colSpan={6}>
           <Bullseye>
             <EmptyState variant={EmptyStateVariant.sm}>
               <EmptyStateHeader

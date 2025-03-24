@@ -33,6 +33,7 @@ export const AddDomain: React.FunctionComponent<AddProps> = ({ proxyDataState, b
 
   return (
     <Tr className='sticky-row'>
+      <Td aria-label='empty' />
       <Td textCenter>
         <DisableSwitch activeState={activeState}/>
       </Td>

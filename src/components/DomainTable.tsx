@@ -15,6 +15,7 @@ export const domainmap = `${mapLocation}/hosts.map`;
 export const devMode = true;
 
 export const columnNames = {
+  reorder: 'Reorder',
   active: 'Active?',
   domain: 'Domain ends with',
   backend: 'Backend',
@@ -32,9 +33,11 @@ export interface ProxyData {
 export const DomainTable = () => {
   const [ backends, setBackends ] = useState<string[]>([]);
   const [ proxyData, setProxyData ] = useState<ProxyData[]>([]);
-  const [searchValue, setSearchValue] = useState('');
-  const [ready, setReady] = useState(false);
-  const rows = proxyData.map((date) => <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index}/>)
+  const [ searchValue, setSearchValue ] = useState('');
+  const [ ready, setReady ] = useState(false);
+  const reorderingState = useState(false);
+  const selectedIndexState = useState(-1);
+  const rows = proxyData.map((date) => <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index} reorderingState={reorderingState} selectedIndexState={selectedIndexState}/>)
   const filteredRows = rows.filter(onFilter);
 
   useEffect(() => {
@@ -106,11 +109,12 @@ export const DomainTable = () => {
       >
         <Thead>
           <Tr>
+            <Th width={10} textCenter>{columnNames.reorder}</Th>
             <Th width={10} textCenter>{columnNames.active}</Th>
-            <Th width={35}>{columnNames.domain}</Th>
-            <Th width={35}>{columnNames.backend}</Th>
-            <Th width={10} screenReaderText='Delete Column' textCenter/>
-            <Th width={10} screenReaderText="Apply Column" textCenter/>
+            <Th width={30}>{columnNames.domain}</Th>
+            <Th width={30}>{columnNames.backend}</Th>
+            <Th width={10} screenReaderText='Delete' textCenter/>
+            <Th width={10} screenReaderText="Apply" textCenter/>
           </Tr>
         </Thead>
         <Tbody>

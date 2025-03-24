@@ -27,7 +27,7 @@ export const ConfirmDeletion: React.FunctionComponent<DeleteProps> = ({ domain, 
       }
     }
     await createBackup()
-          .then(() => cockpit.file(domainmap, {superuser: 'require'}).replace(output));
+      .then(() => cockpit.file(domainmap, {superuser: 'require'}).replace(output));
     handleModalToggle();
     if (active) {
       if (devMode) {
