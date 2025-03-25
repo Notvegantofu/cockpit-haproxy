@@ -7,12 +7,13 @@ import { DateRow } from "./DateRow";
 import { AddDomain } from './AddDomain'
 
 import cockpit from "cockpit";
+import { ApplyReordering } from "./ApplyReordering";
 
 
 const config = '/etc/haproxy/haproxy.cfg';
 export const mapLocation = '/etc/haproxy/maps'
 export const domainmap = `${mapLocation}/hosts.map`;
-export const devMode = true;
+export const devMode = false;
 
 export const columnNames = {
   reorder: 'Reorder',
@@ -35,9 +36,10 @@ export const DomainTable = () => {
   const [ proxyData, setProxyData ] = useState<ProxyData[]>([]);
   const [ searchValue, setSearchValue ] = useState('');
   const [ ready, setReady ] = useState(false);
+  const [ showApplyButton, setShowApplyButton ] = useState(false);
   const reorderingState = useState(false);
   const selectedIndexState = useState(-1);
-  const rows = proxyData.map((date) => <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index} reorderingState={reorderingState} selectedIndexState={selectedIndexState}/>)
+  const rows = proxyData.map((date) => <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index} reorderingState={reorderingState} selectedIndexState={selectedIndexState} setShowApplyButton={setShowApplyButton}/>)
   const filteredRows = rows.filter(onFilter);
 
   useEffect(() => {
@@ -101,6 +103,11 @@ export const DomainTable = () => {
               onClear={() => onSearchChange('')}
             />
           </ToolbarItem>
+          {showApplyButton &&
+            <ToolbarItem>
+              <ApplyReordering setShowButton={setShowApplyButton} />
+            </ToolbarItem>
+          }
         </ToolbarContent>
       </Toolbar>
       <Table

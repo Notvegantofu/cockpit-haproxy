@@ -15,10 +15,11 @@ export interface RowProps {
   proxyDataState: [ProxyData[], React.Dispatch<React.SetStateAction<ProxyData[]>>],
   backends: string[],
   reorderingState: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
-  selectedIndexState: [number, React.Dispatch<React.SetStateAction<number>>]
+  selectedIndexState: [number, React.Dispatch<React.SetStateAction<number>>],
+  setShowApplyButton: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const DateRow: React.FunctionComponent<RowProps> = memo(({ date, proxyDataState, backends, reorderingState: [ reordering, setReordering ], selectedIndexState: [ selectedIndex, setSelectedIndex ] }) => {
+export const DateRow: React.FunctionComponent<RowProps> = memo(({ date, proxyDataState, backends, reorderingState: [ reordering, setReordering ], selectedIndexState: [ selectedIndex, setSelectedIndex ], setShowApplyButton }) => {
   const [ proxyData, setProxyData ] = proxyDataState;
   const tempActiveState = useState(date.active);
   const tempBackendState = useState(date.backend);
@@ -48,6 +49,7 @@ export const DateRow: React.FunctionComponent<RowProps> = memo(({ date, proxyDat
             .then(() => cockpit.file(domainmap, {superuser: 'require'}).replace(output));
           return newArray;
         })
+        setShowApplyButton(true);
       }
       setSelectedIndex(prev => -1);
     } else {

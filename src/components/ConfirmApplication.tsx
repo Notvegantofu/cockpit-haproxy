@@ -75,7 +75,7 @@ export const ConfirmApplication: React.FunctionComponent<ApplyProps> = ({ proxyD
           </Button>
         ]}
       >
-        Are you sure you want to apply your changes to "{domain}"? This action cannot be reversed!
+        Are you sure you want to apply your changes to "{domain}"?
       </Modal>
     </React.Fragment>
   );
