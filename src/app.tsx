@@ -18,7 +18,6 @@
  */
 
 import React from "react";
-import {} from "@patternfly/react-core";
 import { DomainTable } from './components/DomainTable'
 
 export const Application = () => {

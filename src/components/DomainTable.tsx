@@ -13,7 +13,7 @@ import { ApplyReordering } from "./ApplyReordering";
 const config = '/etc/haproxy/haproxy.cfg';
 export const mapLocation = '/etc/haproxy/maps'
 export const domainmap = `${mapLocation}/hosts.map`;
-export const devMode = false;
+export const devMode = true;
 
 export const columnNames = {
   reorder: 'Reorder',
