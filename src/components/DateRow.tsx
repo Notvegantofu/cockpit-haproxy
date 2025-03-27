@@ -4,7 +4,7 @@ import { DisableSwitch } from './DisableSwitch';
 import { BackendSelect } from './BackendSelect';
 import { columnNames, ProxyData, domainmap, devMode } from './DomainTable';
 import { ArrowsAltVIcon, BanIcon, LongArrowAltDownIcon } from '@patternfly/react-icons';
-import { Button, Icon } from '@patternfly/react-core';
+import { Button,  } from '@patternfly/react-core';
 import { createBackup } from './createBackup';
 import cockpit from 'cockpit'
 import { ConfirmActionModal } from 'shared/ConfirmActionModal';

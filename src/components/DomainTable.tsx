@@ -10,7 +10,7 @@ import { AddDomain } from "./AddDomain";
 const config = '/etc/haproxy/haproxy.cfg';
 export const mapLocation = '/etc/haproxy/maps'
 export const domainmap = `${mapLocation}/hosts.map`;
-export const devMode = true;
+export const devMode = false; 
 
 export const columnNames = {
   reorder: 'Reorder',
@@ -73,8 +73,8 @@ export const DomainTable = () => {
   }
   
   const headerValues: HeaderValue[] = [
-    {text: columnNames.reorder, width: 10},
-    {text: columnNames.active, width: 10},
+    {text: columnNames.reorder, width: 10, textCenter: true},
+    {text: columnNames.active, width: 10, textCenter: true},
     {text: columnNames.domain, width: 30, filtrable: true},
     {text: columnNames.backend, width: 30, filtrable: true},
     {screenReaderText: 'Delete', width: 10},

@@ -2,7 +2,6 @@ import { HelperText, HelperTextItem, TextInput, Toolbar, ToolbarContent, Toolbar
 import React, { useEffect, useState } from 'react';
 import { DisableSwitch } from './DisableSwitch';
 import { BackendSelect } from './BackendSelect';
-import { Td, Tr } from '@patternfly/react-table';
 import { ExclamationCircleIcon } from '@patternfly/react-icons';
 import { ConfirmActionModal } from 'shared/ConfirmActionModal';
 import { createBackup } from './createBackup';
@@ -64,10 +63,10 @@ export const AddDomain: React.FunctionComponent<AddProps> = ({ proxyDataState: [
   return (
     <Toolbar isSticky>
       <ToolbarContent className='no-margin'>
-        <ToolbarItem className='small-width left-offset' spacer={{default: 'spacerNone'}}>
+        <ToolbarItem className='small-width left-offset' gap={{default: "gapNone"}}>
           <DisableSwitch activeState={activeState}/>
         </ToolbarItem>
-        <ToolbarItem className='big-width' spacer={{default: 'spacerNone'}}>
+        <ToolbarItem className='big-width' gap={{default: "gapNone"}}>
           <TextInput aria-label='DomainInput' value={domain} onChange={onDomainChange} placeholder='Domain' />
           {invalidDomain &&
             <HelperText>
@@ -77,7 +76,7 @@ export const AddDomain: React.FunctionComponent<AddProps> = ({ proxyDataState: [
             </HelperText>
           }
         </ToolbarItem>
-        <ToolbarItem className='big-width' spacer={{default: 'spacerNone'}}>
+        <ToolbarItem className='big-width' gap={{default: "gapNone"}}>
           <BackendSelect options={['Select Backend'].concat(backends)} backendState={backendState} />
           {invalidBackend &&
             <HelperText>
@@ -87,7 +86,7 @@ export const AddDomain: React.FunctionComponent<AddProps> = ({ proxyDataState: [
             </HelperText>
           }
         </ToolbarItem>
-        <ToolbarItem className='small-width' spacer={{default: 'spacerNone'}}>
+        <ToolbarItem className='small-width' gap={{default: "gapNone"}}>
           <ConfirmActionModal
           action={confirmAdding}
           openingValidation={openingValidation}
