@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Table, Thead, Tr, Th, Tbody } from '@patternfly/react-table';
-import { SearchInput, Toolbar, ToolbarItem, ToolbarContent } from '@patternfly/react-core'
-import { LoadingData } from "./LoadingData";
-import { MissingData } from "./MissingData";
+import { StandardTable, HeaderValue } from 'shared/StandardTable'
 import { DateRow } from "./DateRow";
-import { AddDomain } from './AddDomain'
 
 import cockpit from "cockpit";
 import { ApplyReordering } from "./ApplyReordering";
@@ -34,13 +30,15 @@ export interface ProxyData {
 export const DomainTable = () => {
   const [ backends, setBackends ] = useState<string[]>([]);
   const [ proxyData, setProxyData ] = useState<ProxyData[]>([]);
-  const [ searchValue, setSearchValue ] = useState('');
   const [ ready, setReady ] = useState(false);
   const [ showApplyButton, setShowApplyButton ] = useState(false);
   const reorderingState = useState(false);
   const selectedIndexState = useState(-1);
-  const rows = proxyData.map((date) => <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index} reorderingState={reorderingState} selectedIndexState={selectedIndexState} setShowApplyButton={setShowApplyButton}/>)
-  const filteredRows = rows.filter(onFilter);
+  const rows = proxyData.map((date) => {return {
+    row: <DateRow date={date} proxyDataState={[proxyData, setProxyData]} backends={backends} key={date.index} reorderingState={reorderingState} selectedIndexState={selectedIndexState} setShowApplyButton={setShowApplyButton}/>,
+    values: ["", "", date.domain, date.backend, "", ""]
+    }
+  })
 
   useEffect(() => {
     cockpit.file(config, {superuser: 'require'}).read().then(content => updateBackends(content || ""))
@@ -72,63 +70,22 @@ export const DomainTable = () => {
     setProxyData(newProxyData)
     setReady(true)
   }
-
-  function onSearchChange(value: string) {
-    setSearchValue(value);
-  };
-
-  function onFilter(row: React.JSX.Element) {
-    if (searchValue === '') {
-      return true;
-    }
-
-    let input: RegExp;
-    try {
-      input = new RegExp(searchValue, 'i');
-    } catch (err) {
-      input = new RegExp(searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-    }
-    return row.props.date.domain.search(input) >= 0 || row.props.date.backend.search(input) >= 0;
-  };
+  
+  const headerValues: HeaderValue[] = [
+    {text: columnNames.reorder, width: 10},
+    {text: columnNames.active, width: 10},
+    {text: columnNames.domain, width: 30, filtrable: true},
+    {text: columnNames.backend, width: 30, filtrable: true},
+    {screenReaderText: 'Delete', width: 10},
+    {screenReaderText: 'Apply', width: 10}
+  ]
 
   return (
-    <>
-      <Toolbar isSticky>
-        <ToolbarContent>
-          <ToolbarItem className="expand">
-            <SearchInput
-              placeholder="Filter by domain or backend"
-              value={searchValue}
-              onChange={(_event, value) => onSearchChange(value)}
-              onClear={() => onSearchChange('')}
-            />
-          </ToolbarItem>
-          {showApplyButton &&
-            <ToolbarItem>
-              <ApplyReordering setShowButton={setShowApplyButton} />
-            </ToolbarItem>
-          }
-        </ToolbarContent>
-      </Toolbar>
-      <Table
-      aria-label="HAProxy table"
-      variant='compact'
-      >
-        <Thead>
-          <Tr>
-            <Th width={10} textCenter>{columnNames.reorder}</Th>
-            <Th width={10} textCenter>{columnNames.active}</Th>
-            <Th width={30}>{columnNames.domain}</Th>
-            <Th width={30}>{columnNames.backend}</Th>
-            <Th width={10} screenReaderText='Delete' textCenter/>
-            <Th width={10} screenReaderText="Apply" textCenter/>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <AddDomain proxyDataState={[proxyData, setProxyData]} backends={backends}/>
-          {!ready? <LoadingData/> : filteredRows.length === 0 ? <MissingData/> : filteredRows}
-        </Tbody>
-      </Table>
-    </>
+    <StandardTable
+    headerValues={headerValues}
+    rows={rows}
+    ready={ready}
+    additonalToolbarItems={showApplyButton ? [<ApplyReordering setShowButton={setShowApplyButton}/>] : []}
+    />
   )
 }

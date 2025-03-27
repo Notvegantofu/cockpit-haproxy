@@ -1,13 +1,12 @@
 import { HelperText, HelperTextItem, TextInput } from '@patternfly/react-core';
 import React, { useEffect, useState } from 'react';
-import { ProxyData } from './DomainTable';
 import { DisableSwitch } from './DisableSwitch';
 import { BackendSelect } from './BackendSelect';
 import { Td, Tr } from '@patternfly/react-table';
 import { ExclamationCircleIcon } from '@patternfly/react-icons';
 import { ConfirmActionModal } from 'shared/ConfirmActionModal';
 import { createBackup } from './createBackup';
-import { domainmap, devMode } from './DomainTable';
+import { domainmap, devMode, ProxyData } from './DomainTable';
 import cockpit from 'cockpit';
 
 interface AddProps {

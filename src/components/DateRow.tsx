@@ -26,12 +26,6 @@ export const DateRow: React.FunctionComponent<RowProps> = memo(({ date, proxyDat
   const tempBackend = tempBackendState[0];
   const updater = useState(["update"])[1]
 
-  // useEffect(() => {
-  //   console.log(`Mounting ${date.domain} with index ${date.index}`);
-  //   return () => console.log(`Unmounting ${date.domain} with index ${date.index}`);
-  // }, [])
-  // console.log(`Rendering ${date.domain} with index ${date.index}`);
-
   const changed = tempActive !== date.active || tempBackend !== date.backend
 
   function onReorder() {
