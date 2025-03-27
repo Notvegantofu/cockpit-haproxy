@@ -4,6 +4,7 @@ import { DateRow } from "./DateRow";
 
 import cockpit from "cockpit";
 import { ApplyReordering } from "./ApplyReordering";
+import { AddDomain } from "./AddDomain";
 
 
 const config = '/etc/haproxy/haproxy.cfg';
@@ -14,7 +15,7 @@ export const devMode = true;
 export const columnNames = {
   reorder: 'Reorder',
   active: 'Active?',
-  domain: 'Domain ends with',
+  domain: 'Domain',
   backend: 'Backend',
   remove: 'Remove',
   apply: 'Apply'
@@ -86,6 +87,7 @@ export const DomainTable = () => {
     rows={rows}
     ready={ready}
     additonalToolbarItems={showApplyButton ? [<ApplyReordering setShowButton={setShowApplyButton}/>] : []}
+    secondaryToolbar={<AddDomain proxyDataState={[proxyData, setProxyData]} backends={backends}/>}
     />
   )
 }

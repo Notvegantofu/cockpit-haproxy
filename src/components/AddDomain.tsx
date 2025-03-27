@@ -1,4 +1,4 @@
-import { HelperText, HelperTextItem, TextInput } from '@patternfly/react-core';
+import { HelperText, HelperTextItem, TextInput, Toolbar, ToolbarContent, ToolbarItem } from '@patternfly/react-core';
 import React, { useEffect, useState } from 'react';
 import { DisableSwitch } from './DisableSwitch';
 import { BackendSelect } from './BackendSelect';
@@ -61,42 +61,41 @@ export const AddDomain: React.FunctionComponent<AddProps> = ({ proxyDataState: [
     setBackend(prev => "Select Backend");
   }
 
-
   return (
-    <Tr className='sticky-row'>
-      <Td aria-label='empty' />
-      <Td textCenter>
-        <DisableSwitch activeState={activeState}/>
-      </Td>
-      <Td>
-        <TextInput aria-label='DomainInput' value={domain} onChange={onDomainChange} />
-        {invalidDomain &&
-          <HelperText>
-            <HelperTextItem icon={<ExclamationCircleIcon />} variant='error'>
-              Please specify a domain
-            </HelperTextItem>
-          </HelperText>
-        }
-      </Td>
-      <Td>
-        <BackendSelect options={['Select Backend'].concat(backends)} backendState={backendState} />
-        {invalidBackend &&
-          <HelperText>
-            <HelperTextItem icon={<ExclamationCircleIcon />} variant='error'>
-              Please specify a Backend
-            </HelperTextItem>
-          </HelperText>
-        }
-      </Td>
-      <Td textCenter>
-        <ConfirmActionModal
+    <Toolbar isSticky>
+      <ToolbarContent className='no-margin'>
+        <ToolbarItem className='small-width left-offset' spacer={{default: 'spacerNone'}}>
+          <DisableSwitch activeState={activeState}/>
+        </ToolbarItem>
+        <ToolbarItem className='big-width' spacer={{default: 'spacerNone'}}>
+          <TextInput aria-label='DomainInput' value={domain} onChange={onDomainChange} placeholder='Domain' />
+          {invalidDomain &&
+            <HelperText>
+              <HelperTextItem icon={<ExclamationCircleIcon />} variant='error'>
+                Please specify a domain
+              </HelperTextItem>
+            </HelperText>
+          }
+        </ToolbarItem>
+        <ToolbarItem className='big-width' spacer={{default: 'spacerNone'}}>
+          <BackendSelect options={['Select Backend'].concat(backends)} backendState={backendState} />
+          {invalidBackend &&
+            <HelperText>
+              <HelperTextItem icon={<ExclamationCircleIcon />} variant='error'>
+                Please specify a Backend
+              </HelperTextItem>
+            </HelperText>
+          }
+        </ToolbarItem>
+        <ToolbarItem className='small-width' spacer={{default: 'spacerNone'}}>
+          <ConfirmActionModal
           action={confirmAdding}
           openingValidation={openingValidation}
           message={`Are you sure you want to add ${domain}?`}
           buttonText='Add'
         />
-      </Td>
-      <Td />
-  </Tr>
+        </ToolbarItem>
+      </ToolbarContent>
+    </Toolbar>
   )
 }

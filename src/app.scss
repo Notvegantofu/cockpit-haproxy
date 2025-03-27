@@ -21,3 +21,30 @@ p {
   z-index: 1;
   background: var(--pf-v5-global--BackgroundColor--100);
 }
+
+.small-width {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1 !important;
+}
+
+.big-width {
+  width: 30%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-offset {
+  margin-left: 10%;
+}
+
+.no-margin {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
