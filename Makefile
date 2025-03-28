@@ -46,12 +46,12 @@ $(COCKPIT_REPO_STAMP): Makefile
 SHARED_COMPONENT_REPO_STAMP = pkg/lib/shared/TestComponent.tsx
 
 SHARED_COMPONENT_REPO_FILES = \
-	pkg/lib \
+	shared \
 	$(NULL)
 
 	
 SHARED_COMPONENT_REPO_URL = https://github.com/Notvegantofu/cockpit-shared-components.git
-SHARED_COMPONENT_REPO_COMMIT = 5938afc9a6587446fc2a7554b1f0240c315889b6
+SHARED_COMPONENT_REPO_COMMIT = 053fbf41c8c29bbf5b9cde32c19198cb9ce37e17
 
 $(SHARED_COMPONENT_REPO_FILES): $(SHARED_COMPONENT_REPO_STAMP)
 SHARED_COMPONENT_REPO_TREE = '$(strip $(SHARED_COMPONENT_REPO_COMMIT))^{tree}'
@@ -59,7 +59,7 @@ SHARED_COMPONENT_REPO_TREE = '$(strip $(SHARED_COMPONENT_REPO_COMMIT))^{tree}'
 $(SHARED_COMPONENT_REPO_STAMP): Makefile
 	@git rev-list --quiet --objects $(SHARED_COMPONENT_REPO_TREE) -- 2>/dev/null || \
 	    git fetch --no-tags --no-write-fetch-head --depth=1 $(SHARED_COMPONENT_REPO_URL) $(SHARED_COMPONENT_REPO_COMMIT)
-	git archive $(SHARED_COMPONENT_REPO_TREE) -- $(SHARED_COMPONENT_REPO_FILES) | tar x
+	git archive $(SHARED_COMPONENT_REPO_TREE) -- $(SHARED_COMPONENT_REPO_FILES) | tar x -C pkg/lib
 #
 # i18n
 #
