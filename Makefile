@@ -50,7 +50,7 @@ SHARED_COMPONENT_REPO_FILES = \
 	$(NULL)
 
 	
-SHARED_COMPONENT_REPO_URL = https://github.com/Notvegantofu/cockpit-shared-components.git
+SHARED_COMPONENT_REPO_URL = https://github.com/valetobias/cockpit-shared-components.git
 SHARED_COMPONENT_REPO_COMMIT = 053fbf41c8c29bbf5b9cde32c19198cb9ce37e17
 
 $(SHARED_COMPONENT_REPO_FILES): $(SHARED_COMPONENT_REPO_STAMP)

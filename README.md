@@ -17,7 +17,7 @@ On Fedora:
 These commands check out the source and build it into the `dist/` directory:
 
 ```
-git clone https://github.com/Notvegantofu/cockpit-haproxy.git
+git clone https://github.com/valetobias/cockpit-haproxy.git
 cd haproxy
 make
 ```
